@@ -18,6 +18,20 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user = require('../models/user.model.js')(sequelize, Sequelize);
+db.user = require('./user.js')(sequelize, Sequelize);
+
+db.board = require('../models/board.js')(sequelize, Sequelize);
+
+db.list = require('../models/list.js')(sequelize, Sequelize);
+
+db.task = require('../models/task.js')(sequelize, Sequelize);
+
+const { user, board, list, task } = db;
+user.hasOne(board);
+board.belongsTo(user);
+board.hasMany(list, { onDelete: 'cascade', hooks: true });
+list.belongsTo(board);
+list.hasMany(task, { onDelete: 'cascade', hooks: true });
+task.belongsTo(list);
 
 module.exports = db;
