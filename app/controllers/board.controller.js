@@ -1,3 +1,4 @@
+const { getBoardWithEverything } = require('./helpers');
 const db = require('../models');
 const Board = db.board;
 const List = db.list;
@@ -26,22 +27,9 @@ exports.createBoard = async (req, res) => {
   }
 };
 
-exports.getBoardWithEverything = async (req, res) => {
-  let board = await Board.findOne({
-    where: {
-      UserId: req.userId,
-    },
-    include: [
-      {
-        model: List,
-        include: [
-          {
-            model: Task,
-          },
-        ],
-      },
-    ],
-  });
+exports.getBoardAll = async (req, res) => {
+  console.log(req.userId);
+  let board = await getBoardWithEverything(req.userId);
   if (board) {
     res.status(200).send({ board });
   }
