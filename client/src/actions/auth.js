@@ -4,10 +4,34 @@ import {
   LOG_OUT,
   SIGNUP_FAIL,
   SIGNUP_SUCCESS,
+  USER_LOADED,
+  AUTH_ERROR,
+  CLEAR_BOARD,
 } from './type';
 import { setAlert } from './alert';
+import setAuthToken from '../utils/setAuthToken';
 
 const axios = require('axios');
+
+//load user
+export const loadUser = () => {
+  return async (dispatch) => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+    try {
+      const res = await axios.get('/api/users/');
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: AUTH_ERROR,
+      });
+    }
+  };
+};
 
 export const signup = ({ username, email, password }) => async (dispatch) => {
   const config = {
@@ -59,5 +83,8 @@ export const login = ({ username, password }) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   dispatch({
     type: LOG_OUT,
+  });
+  dispatch({
+    type: CLEAR_BOARD,
   });
 };

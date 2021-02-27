@@ -7,6 +7,16 @@ const Op = db.Sequelize.Op;
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 
+exports.loadUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.userId);
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+};
+
 exports.signup = async (req, res) => {
   const { username, email, password } = req.body;
   //check username
@@ -62,6 +72,7 @@ exports.login = async (req, res) => {
     });
     res.status(200).send({
       token: token,
+      user: user,
     });
   } catch (error) {
     res.status(500).send({ message: error.message });

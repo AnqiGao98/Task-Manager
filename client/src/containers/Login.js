@@ -5,8 +5,9 @@ import './styles/Login.css';
 import { login } from './../actions/auth';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
-const Login = ({ login }) => {
+const Login = ({ login, isAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
@@ -18,7 +19,10 @@ const Login = ({ login }) => {
   function handleSubmit(event) {
     event.preventDefault();
     login({ username, password });
-    history.push('/');
+  }
+
+  if (isAuthenticated) {
+    return <Redirect to='/'></Redirect>;
   }
 
   return (
@@ -49,5 +53,7 @@ const Login = ({ login }) => {
     </div>
   );
 };
-const mapStateToProps = (state) => {};
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
 export default connect(mapStateToProps, { login })(Login);

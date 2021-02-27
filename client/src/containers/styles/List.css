@@ -1,0 +1,11 @@
+.List {
+  background-color: #efefef;
+  margin-bottom: 10px;
+  width: 270px;
+  display: inline-flex;
+  margin-right: 10px;
+}
+
+.button {
+  margin-top: 10px;
+}

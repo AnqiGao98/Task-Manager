@@ -1,9 +1,27 @@
-.Home .lander {
+.Home {
   padding: 80px 0;
-  text-align: center;
+  text-align: left;
 }
 
-.Home .lander h1 {
+.Home {
   font-family: 'Open Sans', sans-serif;
   font-weight: 600;
+}
+
+.Board {
+  min-height: 100px;
+}
+
+.lists {
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.title {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 40px;
+}
+
+.titleForm {
+  display: block;
 }

@@ -28,9 +28,30 @@ exports.createBoard = async (req, res) => {
 };
 
 exports.getBoardAll = async (req, res) => {
-  console.log(req.userId);
-  let board = await getBoardWithEverything(req.userId);
-  if (board) {
-    res.status(200).send({ board });
+  try {
+    board = await getBoardWithEverything(req.userId);
+    res.json({ board });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+};
+
+exports.renameBoard = async (req, res) => {
+  try {
+    let board = await Board.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!board) {
+      return res.status(404).send({ message: 'Board Not Found' });
+    }
+    board.name = req.body.name;
+    board.save();
+    res.json({ board });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
   }
 };

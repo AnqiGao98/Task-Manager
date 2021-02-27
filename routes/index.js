@@ -11,6 +11,7 @@ const auth = require('../app/middleware/authjwt');
 router.get('/', auth, boardController.getBoardAll);
 router.post('/', auth, boardController.createBoard);
 router.get('/test', auth, boardController.getBoard);
+router.put('/:id/rename', auth, boardController.renameBoard);
 
 //list
 router.get('/:id/lists', auth, listController.getLists);
