@@ -52,8 +52,25 @@ const getListWithTasks = async (listId) => {
     order: [[Task, 'order', 'ASC']],
   });
 };
+
+const getBoard = async (BoardId) => {
+  return await Board.findOne({
+    where: {
+      id: BoardId,
+    },
+  });
+};
+const getList = async (listId) => {
+  return await List.findOne({
+    where: {
+      id: listId,
+    },
+  });
+};
 module.exports = {
   getBoardWithEverything,
   getBoardWithList,
   getListWithTasks,
+  getBoard,
+  getList,
 };

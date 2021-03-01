@@ -4,6 +4,7 @@ import {
   BOARD_ERROR,
   RENAME_BOARD,
   CLEAR_BOARD,
+  UPDATE_BOARD,
 } from '../actions/type';
 
 const initialState = {
@@ -17,6 +18,7 @@ export default function (state = initialState, action) {
   switch (type) {
     case GET_BOARD:
     case CREATE_BOARD:
+    case UPDATE_BOARD:
       return {
         ...state,
         board: payload.board,

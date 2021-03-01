@@ -4,12 +4,14 @@ import './styles/List.css';
 import { connect } from 'react-redux';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import { renameList, createList } from '../actions/list';
 
-const List = ({}) => {
+const List = ({ boardId, createList }) => {
   const [newListName, setnewListName] = useState('');
   function handleSubmit(event) {
     event.preventDefault();
-    //createBoard({ newListName });
+    createList(boardId, newListName);
+    event.target.reset();
   }
   return (
     <Card className='NewList' style={{ width: '18rem' }}>
@@ -18,7 +20,7 @@ const List = ({}) => {
           <Form.Label>Enter new list name</Form.Label>
           <Form.Control
             type='text'
-            placeholder='Normal text'
+            placeholder='list name'
             onChange={(e) => setnewListName(e.target.value)}
           />
           <Button variant='primary' type='submit' className='button'>
@@ -30,4 +32,4 @@ const List = ({}) => {
   );
 };
 //const mapStateToProps = (state) => {};
-export default connect(null, {})(List);
+export default connect(null, { createList })(List);

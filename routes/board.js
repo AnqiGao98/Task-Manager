@@ -15,15 +15,15 @@ router.put('/:id/rename', auth, boardController.renameBoard);
 
 //list
 router.get('/:id/lists', auth, listController.getLists);
-router.post('/:id/list', auth, listController.createList);
+router.post('/:id/lists', auth, listController.createList);
 router.delete('/:id/list/:list_id', auth, listController.deleteList);
-router.post('/:id/list/:list_id/rename', auth, listController.renameList);
-router.post('/:id/list/:list_id/reorder', auth, listController.reorderList);
+router.put('/:id/list/:list_id/rename', auth, listController.renameList);
+router.put('/:id/list/:list_id/reorder', auth, listController.reorderList);
 
 //tasks
 router.post('/:id/list/:list_id/task', auth, taskController.addTask);
 router.delete('/:id/list/:list_id/task', auth, taskController.deleteTask);
-router.post('/:id/list/:list_id/task/rename', auth, taskController.renameTask);
-router.post('/:id/task/:task_id/reorder', auth, taskController.reorderTask);
+router.put('/:id/list/:list_id/task/rename', auth, taskController.renameTask);
+router.put('/:id/task/:task_id/reorder', auth, taskController.reorderTask);
 
 module.exports = router;

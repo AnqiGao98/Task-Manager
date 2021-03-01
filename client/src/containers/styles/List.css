@@ -9,3 +9,7 @@
 .button {
   margin-top: 10px;
 }
+
+.NewList {
+  display: inline-flex;
+}

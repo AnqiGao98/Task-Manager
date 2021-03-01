@@ -49,7 +49,7 @@ const Board = ({ board: { board, loading }, createBoard, getBoard }) => {
         <div className='lists'>
           {board.Lists &&
             board.Lists.map((list) => <List key={list.id} list={list} />)}
-          <NewList />
+          <NewList boardId={board.id} />
         </div>
       )}
     </div>

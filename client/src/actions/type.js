@@ -14,8 +14,10 @@ export const CREATE_BOARD = 'CREATE_BOARD';
 export const CLEAR_BOARD = 'CLEAR_BOARD';
 export const RENAME_BOARD = 'RENAME_BOARD';
 export const BOARD_ERROR = 'BOARD_ERROR';
+export const UPDATE_BOARD = 'UPDATE_BOARD';
 
 export const GET_LIST = 'GET_LIST';
 export const ADD_LIST = 'ADD_LIST';
-export const REMOVE_LIST = 'ADD_LIST';
+export const REMOVE_LIST = 'REMOVE_LIST';
+export const RENAME_LIST = 'RENAME_LIST';
 export const LIST_ERROR = 'LIST_ERROR';

@@ -5,17 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 
-var indexRouter = require('./routes/index');
+var boardRouter = require('./routes/board');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
-// var corsOptions = {
-//   origin: 'http://localhost:8081',
-// };
-
-// app.use(cors(corsOptions));
-// app.use(bodyParser.json());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -27,7 +21,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/users', usersRouter);
-app.use('/board', indexRouter);
+app.use('/api/board', boardRouter);
 
 //set up db
 const db = require('./app/models/index');

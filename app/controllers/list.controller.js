@@ -1,5 +1,10 @@
 const db = require('../models');
-const { getBoardWithList, getBoardWithEverything } = require('./helpers');
+const {
+  getBoardWithList,
+  getBoardWithEverything,
+  getBoard,
+  getList,
+} = require('./helpers');
 const Board = db.board;
 const List = db.list;
 const Task = db.task;
@@ -7,21 +12,25 @@ const Task = db.task;
 const Op = db.Sequelize.Op;
 
 exports.createList = async (req, res) => {
-  const board = await getBoardWithList(req.params.id);
-  if (!board) {
-    return res.status(404).send({ message: 'Board Not Found' });
-  }
-  let list = await List.create({
-    BoardId: req.params.id,
-    name: req.body.name,
-  });
-  if (list) {
-    res.status(200).send({ list });
+  try {
+    let board = await getBoard(req.params.id);
+    if (!board) {
+      return res.status(404).send({ message: 'Board Not Found' });
+    }
+    await List.create({
+      BoardId: req.params.id,
+      name: req.body.name,
+    });
+    board = await getBoardWithEverything(req.userId);
+    res.status(200).send({ board });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
   }
 };
 
 exports.getLists = async (req, res) => {
-  const board = await getBoardWithList(req.params.id);
+  const board = await getBoard(req.params.id);
   if (!board) {
     return res.status(404).send({ message: 'Board Not Found' });
   }
@@ -35,38 +44,53 @@ exports.getLists = async (req, res) => {
   }
 };
 
+//board/:id/list/:list_id/rename
 exports.renameList = async (req, res) => {
-  const board = await getBoardWithList(req.params.id);
-  if (!board) {
-    return res.status(404).send({ message: 'Board Not Found' });
-  }
-  let list = await List.update(
-    { name: req.body.name },
-    {
-      where: {
-        id: req.params.list_id,
-      },
+  try {
+    let board = await getBoard(req.params.id);
+    if (!board) {
+      return res.status(404).send({ message: 'Board Not Found' });
     }
-  );
-  if (list) {
-    res.status(200).send({ list });
+    let list = await getList(req.params.list_id);
+    if (!list) {
+      return res.status(404).send({ message: 'list Not Found' });
+    }
+    await List.update(
+      { name: req.body.name },
+      {
+        where: {
+          id: req.params.list_id,
+        },
+      }
+    );
+    board = await getBoardWithEverything(req.userId);
+    res.status(200).send({ board });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
   }
 };
 
 exports.deleteList = async (req, res) => {
-  const board = await getBoardWithList(req.params.id);
-  if (!board) {
-    return res.status(404).send({ message: 'Board Not Found' });
-  }
   try {
+    let board = await getBoard(req.params.id);
+    if (!board) {
+      return res.status(404).send({ message: 'Board Not Found' });
+    }
+    let list = await getList(req.params.list_id);
+    if (!list) {
+      return res.status(404).send({ message: 'list Not Found' });
+    }
     await List.destroy({
       where: {
         id: req.params.list_id,
       },
     });
-    res.status(200);
+    board = await getBoardWithEverything(req.userId);
+    res.status(200).send({ board });
   } catch (error) {
-    res.status(500).send({ message: error });
+    console.error(error);
+    res.status(500).send('Server error');
   }
 };
 

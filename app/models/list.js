@@ -11,7 +11,6 @@ module.exports = (sequelize, Sequelize) => {
 
   List.addHook('beforeValidate', async (list) => {
     try {
-      //console.log(sequelize.models);
       const board = await sequelize.models.Board.findByPk(list.BoardId);
       if (board) {
         const lists = await board.getLists();
