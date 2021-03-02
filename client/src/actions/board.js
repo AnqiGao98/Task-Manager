@@ -2,7 +2,7 @@ import {
   GET_BOARD,
   CREATE_BOARD,
   CLEAR_BOARD,
-  RENAME_BOARD,
+  UPDATE_BOARD,
   BOARD_ERROR,
 } from './type';
 import { setAlert } from './alert';
@@ -71,7 +71,7 @@ export const renameBoard = (boardId, name) => async (dispatch) => {
       config
     );
     dispatch({
-      type: RENAME_BOARD,
+      type: UPDATE_BOARD,
       payload: result.data,
     });
   } catch (error) {

@@ -39,11 +39,7 @@ exports.getBoardAll = async (req, res) => {
 
 exports.renameBoard = async (req, res) => {
   try {
-    let board = await Board.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
+    let board = await getBoardWithEverything(req.userId);
     if (!board) {
       return res.status(404).send({ message: 'Board Not Found' });
     }

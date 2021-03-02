@@ -37,12 +37,6 @@ export default function (state = initialState, action) {
         loading: false,
         board: null,
       };
-    case RENAME_BOARD:
-      return {
-        ...state,
-        loading: false,
-        board: payload.board,
-      };
     default:
       return state;
   }

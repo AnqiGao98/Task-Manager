@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import './styles/Home.css';
 import { connect } from 'react-redux';
-import { Col, Row, Form } from 'react-bootstrap';
-import board from '../reducers/board';
 import { renameBoard } from '../actions/board';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';

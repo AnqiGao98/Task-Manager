@@ -12,7 +12,6 @@ export const REMOVE_ALERT = 'REMOVE_ALERT';
 export const GET_BOARD = 'GET_BOARD';
 export const CREATE_BOARD = 'CREATE_BOARD';
 export const CLEAR_BOARD = 'CLEAR_BOARD';
-export const RENAME_BOARD = 'RENAME_BOARD';
 export const BOARD_ERROR = 'BOARD_ERROR';
 export const UPDATE_BOARD = 'UPDATE_BOARD';
 
