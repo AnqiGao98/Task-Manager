@@ -69,7 +69,7 @@ export const renameList = (boardId, listId, name) => async (dispatch) => {
   const body = JSON.stringify({ name });
   try {
     const result = await axios.put(
-      `/board/${boardId}/list/${listId}/rename`,
+      `/api/board/${boardId}/list/${listId}/rename`,
       body,
       config
     );

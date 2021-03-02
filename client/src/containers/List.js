@@ -3,13 +3,35 @@ import Button from 'react-bootstrap/esm/Button';
 import './styles/List.css';
 import { connect } from 'react-redux';
 import Card from 'react-bootstrap/Card';
-import { deleteList } from '../actions/list';
+import { deleteList, renameList } from '../actions/list';
+import FormControl from 'react-bootstrap/FormControl';
 
-const List = ({ list, board: { board }, deleteList }) => {
+const List = ({ list, board: { board }, deleteList, renameList }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  function toggleTitle() {
+    setIsEditing(!isEditing);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log('rename here');
+    renameList(board.id, list.id, event.target.value);
+    toggleTitle();
+  }
   return (
     <Card className='List' style={{ width: '18rem' }}>
       <Card.Body>
-        <Card.Title>{list.name}</Card.Title>
+        <Card.Title>
+          {isEditing ? (
+            <FormControl
+              placeholder={list.name}
+              onBlur={(e) => handleSubmit(e)}
+            />
+          ) : (
+            <div onClick={toggleTitle}>{list.name}</div>
+          )}
+        </Card.Title>
         <Card.Text>card text</Card.Text>
       </Card.Body>
       <Card.Footer>
@@ -23,4 +45,4 @@ const List = ({ list, board: { board }, deleteList }) => {
 const mapStateToProps = (state) => ({
   board: state.board,
 });
-export default connect(mapStateToProps, { deleteList })(List);
+export default connect(mapStateToProps, { deleteList, renameList })(List);
