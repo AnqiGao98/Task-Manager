@@ -5,6 +5,7 @@ import {
   REMOVE_LIST,
   ADD_LIST,
   UPDATE_BOARD,
+  SORT_LIST,
 } from './type';
 import { setAlert } from './alert';
 
@@ -77,6 +78,44 @@ export const renameList = (boardId, listId, name) => async (dispatch) => {
       type: UPDATE_BOARD,
       payload: result.data,
     });
+  } catch (error) {
+    dispatch(setAlert(error.response.data.message, 'danger'));
+    dispatch({
+      type: LIST_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+export const reorderList = (boardId, list, oldIndex, newIndex, lists) => async (
+  dispatch
+) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const body = JSON.stringify({ orderNum: newIndex });
+  try {
+    lists.splice(oldIndex, 1);
+    lists.splice(newIndex, 0, list);
+    //update all list's order
+    for (let i of lists) {
+      i.order = lists.indexOf(i) + 1;
+    }
+
+    dispatch({
+      type: SORT_LIST,
+      payload: lists,
+    });
+    await axios.put(
+      `/api/board/${boardId}/list/${list.id}/reorder`,
+      body,
+      config
+    );
   } catch (error) {
     dispatch(setAlert(error.response.data.message, 'danger'));
     dispatch({

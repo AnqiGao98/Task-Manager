@@ -17,6 +17,7 @@ export const UPDATE_BOARD = 'UPDATE_BOARD';
 
 export const GET_LIST = 'GET_LIST';
 export const ADD_LIST = 'ADD_LIST';
+export const SORT_LIST = 'SORT_LIST';
 export const REMOVE_LIST = 'REMOVE_LIST';
 export const RENAME_LIST = 'RENAME_LIST';
 export const LIST_ERROR = 'LIST_ERROR';

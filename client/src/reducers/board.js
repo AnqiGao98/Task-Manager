@@ -5,6 +5,7 @@ import {
   RENAME_BOARD,
   CLEAR_BOARD,
   UPDATE_BOARD,
+  SORT_LIST,
 } from '../actions/type';
 
 const initialState = {
@@ -22,6 +23,15 @@ export default function (state = initialState, action) {
       return {
         ...state,
         board: payload.board,
+        loading: false,
+      };
+    case SORT_LIST:
+      return {
+        ...state,
+        board: {
+          ...state.board,
+          Lists: payload,
+        },
         loading: false,
       };
     case BOARD_ERROR:
