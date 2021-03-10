@@ -11,12 +11,16 @@ const Task = db.task;
 const Op = db.Sequelize.Op;
 
 exports.addTask = async (req, res) => {
-  let task = await Task.create({
-    ListId: req.params.list_id,
-    name: req.body.name,
-  });
-  if (task) {
-    res.status(200).send({ task });
+  try {
+    await Task.create({
+      ListId: req.params.list_id,
+      name: req.body.name,
+    });
+    board = await getBoardWithEverything(req.userId);
+    res.status(200).send({ board });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
   }
 };
 
@@ -72,6 +76,8 @@ exports.reorderTask = async (req, res) => {
     if (!taskIds.includes(task.id)) {
       res.status(404).send({ message: 'Task does not belong to fromBaord.' });
     }
+
+    await task.update({ ListId: toList.id });
 
     if (fromListId === toListId) {
       fromList.Tasks.splice(taskIds.indexOf(task.id), 1);

@@ -4,9 +4,19 @@ import './styles/List.css';
 import { connect } from 'react-redux';
 import Card from 'react-bootstrap/Card';
 import { deleteList, renameList } from '../actions/list';
+import { reorderTask } from '../actions/task';
 import FormControl from 'react-bootstrap/FormControl';
+import Task from './Task';
+import NewTask from './NewTask';
+import { ReactSortable } from 'react-sortablejs';
 
-const List = ({ list, board: { board }, deleteList, renameList }) => {
+const List = ({
+  list,
+  board: { board },
+  deleteList,
+  renameList,
+  reorderTask,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
 
   function toggleTitle() {
@@ -14,28 +24,51 @@ const List = ({ list, board: { board }, deleteList, renameList }) => {
   }
 
   function handleSubmit(event) {
-    event.preventDefault();
-    console.log('rename here');
     renameList(board.id, list.id, event.target.value);
     toggleTitle();
   }
+  function end(event) {
+    const fromListId = event.from.parentElement.id;
+    const toListId = event.to.parentElement.id;
+    reorderTask(
+      board.id,
+      board,
+      event.item.id,
+      fromListId,
+      toListId,
+      event.newIndex,
+      event.oldIndex
+    );
+  }
   return (
-    <Card className='List' style={{ width: '18rem' }}>
+    <Card id={list.id} className='List' style={{ width: '18rem' }}>
       <Card.Body>
         <Card.Title>
           {isEditing ? (
             <FormControl
               placeholder={list.name}
+              defaultValue={list.name}
               onBlur={(e) => handleSubmit(e)}
             />
           ) : (
             <div onClick={toggleTitle}>{list.name}</div>
           )}
         </Card.Title>
-        <Card.Text>card text</Card.Text>
+        <div id={list.id} key={list.id}>
+          <ReactSortable
+            list={list.Tasks}
+            setList={() => {}}
+            onEnd={(e) => end(e)}
+            group='shared'
+          >
+            {list.Tasks &&
+              list.Tasks.map((task) => <Task key={task.id} task={task} />)}
+          </ReactSortable>
+        </div>
+        <NewTask list={list.id} />
       </Card.Body>
       <Card.Footer>
-        <Button onClick={() => deleteList(board.id, list.id)}>
+        <Button variant='danger' onClick={() => deleteList(board.id, list.id)}>
           Delete list
         </Button>
       </Card.Footer>
@@ -45,4 +78,8 @@ const List = ({ list, board: { board }, deleteList, renameList }) => {
 const mapStateToProps = (state) => ({
   board: state.board,
 });
-export default connect(mapStateToProps, { deleteList, renameList })(List);
+export default connect(mapStateToProps, {
+  deleteList,
+  renameList,
+  reorderTask,
+})(List);

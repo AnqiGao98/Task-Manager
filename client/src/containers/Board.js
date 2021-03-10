@@ -29,8 +29,6 @@ const Board = ({
   }
 
   function end(event) {
-    console.log('end ');
-    console.log(event);
     reorderList(
       board.id,
       board.Lists[event.oldIndex],

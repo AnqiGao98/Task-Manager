@@ -4,9 +4,9 @@ import './styles/List.css';
 import { connect } from 'react-redux';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import { renameList, createList } from '../actions/list';
+import { createList } from '../actions/list';
 
-const List = ({ boardId, createList }) => {
+const NewList = ({ boardId, createList }) => {
   const [newListName, setnewListName] = useState('');
   function handleSubmit(event) {
     event.preventDefault();
@@ -32,4 +32,4 @@ const List = ({ boardId, createList }) => {
   );
 };
 //const mapStateToProps = (state) => {};
-export default connect(null, { createList })(List);
+export default connect(null, { createList })(NewList);
