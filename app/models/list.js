@@ -9,6 +9,11 @@ module.exports = (sequelize, Sequelize) => {
     },
   });
 
+  List.prototype.getUser = async function () {
+    const board = await this.getBoard();
+    return await board.getUser();
+  };
+
   List.addHook('beforeValidate', async (list) => {
     try {
       const board = await sequelize.models.Board.findByPk(list.BoardId);

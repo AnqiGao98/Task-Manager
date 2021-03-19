@@ -9,7 +9,7 @@ import { setAlert } from './alert';
 
 const axios = require('axios');
 
-export const createBoard = ({ name }) => async (dispatch) => {
+export const createBoard = (name) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',

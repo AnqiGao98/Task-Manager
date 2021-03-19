@@ -22,8 +22,8 @@ router.put('/:id/list/:list_id/reorder', auth, listController.reorderList);
 
 //tasks
 router.post('/:id/list/:list_id/task', auth, taskController.addTask);
-router.delete('/:id/list/:list_id/task', auth, taskController.deleteTask);
-router.put('/:id/list/:list_id/task/rename', auth, taskController.renameTask);
+router.delete('/:id/task/:task_id', auth, taskController.deleteTask);
+router.put('/:id/task/:task_id/edit', auth, taskController.updateTask);
 router.put('/:id/task/:task_id/reorder', auth, taskController.reorderTask);
 
 module.exports = router;

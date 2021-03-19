@@ -3,13 +3,15 @@ import { setAlert } from './alert';
 
 const axios = require('axios');
 
-export const addTask = (boardId, listId, taskName) => async (dispatch) => {
+export const addTask = (boardId, listId, taskName, taskDescription) => async (
+  dispatch
+) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
-  const body = JSON.stringify({ name: taskName });
+  const body = JSON.stringify({ name: taskName, description: taskDescription });
   try {
     const result = await axios.post(
       `/api/board/${boardId}/list/${listId}/task`,
@@ -78,6 +80,59 @@ export const reorderTask = (
     dispatch(setAlert(error, 'danger'));
     dispatch({
       type: BOARD_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+export const updateTask = (
+  boardId,
+  taskId,
+  taskName,
+  taskDescription
+) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const body = JSON.stringify({ name: taskName, description: taskDescription });
+  try {
+    const result = await axios.put(
+      `/api/board/${boardId}/task/${taskId}/edit`,
+      body,
+      config
+    );
+    dispatch({
+      type: UPDATE_BOARD,
+      payload: result.data,
+    });
+  } catch (error) {
+    dispatch(setAlert(error.response.data.message, 'danger'));
+    dispatch({
+      type: LIST_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+export const deleteTask = (boardId, taskId) => async (dispatch) => {
+  try {
+    let result = await axios.delete(`/api/board/${boardId}/task/${taskId}`);
+    dispatch({
+      type: UPDATE_BOARD,
+      payload: result.data,
+    });
+  } catch (error) {
+    dispatch(setAlert(error.response.data.message, 'danger'));
+    dispatch({
+      type: LIST_ERROR,
       payload: {
         msg: error.response.statusText,
         status: error.response.status,

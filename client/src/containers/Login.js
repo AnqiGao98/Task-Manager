@@ -5,7 +5,7 @@ import './styles/Login.css';
 import { login } from './../actions/auth';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 const Login = ({ login, isAuthenticated }) => {
   const [username, setUsername] = useState('');

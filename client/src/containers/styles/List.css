@@ -13,3 +13,7 @@
 .NewList {
   display: inline-flex;
 }
+
+.task-delete {
+  float: right;
+}

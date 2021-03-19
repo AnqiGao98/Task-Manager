@@ -62,10 +62,12 @@ const List = ({
             group='shared'
           >
             {list.Tasks &&
-              list.Tasks.map((task) => <Task key={task.id} task={task} />)}
+              list.Tasks.map((task) => (
+                <Task key={task.id} task={task} boardId={board.id} />
+              ))}
           </ReactSortable>
         </div>
-        <NewTask list={list.id} />
+        <NewTask boardId={board.id} list={list} />
       </Card.Body>
       <Card.Footer>
         <Button variant='danger' onClick={() => deleteList(board.id, list.id)}>

@@ -17,6 +17,9 @@ exports.createList = async (req, res) => {
     if (!board) {
       return res.status(404).send({ message: 'Board Not Found' });
     }
+    if (board.UserId !== req.userId) {
+      return res.status(403).send({ message: 'Not Authorized' });
+    }
     await List.create({
       BoardId: req.params.id,
       name: req.body.name,
@@ -34,6 +37,9 @@ exports.getLists = async (req, res) => {
   if (!board) {
     return res.status(404).send({ message: 'Board Not Found' });
   }
+  if (board.UserId !== req.userId) {
+    return res.status(403).send({ message: 'Not Authorized' });
+  }
   let lists = await List.findAll({
     where: {
       BoardId: req.params.id,
@@ -50,6 +56,9 @@ exports.renameList = async (req, res) => {
     let board = await getBoard(req.params.id);
     if (!board) {
       return res.status(404).send({ message: 'Board Not Found' });
+    }
+    if (board.UserId !== req.userId) {
+      return res.status(403).send({ message: 'Not Authorized' });
     }
     let list = await getList(req.params.list_id);
     if (!list) {
@@ -76,6 +85,9 @@ exports.deleteList = async (req, res) => {
     let board = await getBoard(req.params.id);
     if (!board) {
       return res.status(404).send({ message: 'Board Not Found' });
+    }
+    if (board.UserId !== req.userId) {
+      return res.status(403).send({ message: 'Not Authorized' });
     }
     let list = await getList(req.params.list_id);
     if (!list) {

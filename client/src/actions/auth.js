@@ -42,7 +42,6 @@ export const signup = ({ username, email, password }) => async (dispatch) => {
   const body = JSON.stringify({ username, email, password });
   try {
     const result = await axios.post('/api/users/signup', body, config);
-    console.log(result);
     dispatch({
       type: SIGNUP_SUCCESS,
       payload: result.data,

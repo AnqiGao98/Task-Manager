@@ -25,7 +25,7 @@ const Board = ({
 
   function handleSubmit(event) {
     event.preventDefault();
-    createBoard({ boardName });
+    createBoard(boardName);
   }
 
   function end(event) {

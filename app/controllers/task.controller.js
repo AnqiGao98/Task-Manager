@@ -12,9 +12,17 @@ const Op = db.Sequelize.Op;
 
 exports.addTask = async (req, res) => {
   try {
+    let board = await getBoardWithList(req.params.id);
+    if (!board) {
+      res.status(404).send({ message: 'Board not found.' });
+    }
+    if (board.UserId !== req.userId) {
+      return res.status(403).send({ message: 'Not Authorized' });
+    }
     await Task.create({
       ListId: req.params.list_id,
       name: req.body.name,
+      description: req.body.description,
     });
     board = await getBoardWithEverything(req.userId);
     res.status(200).send({ board });
@@ -24,30 +32,50 @@ exports.addTask = async (req, res) => {
   }
 };
 
+///board/:id/task/:task_id/
 exports.deleteTask = async (req, res) => {
   try {
-    await List.destroy({
+    const tasks = await Task.findAll({
+      where: { id: req.params.task_id },
+      include: { model: List, include: Board },
+    });
+    if (tasks[0].List.Board.UserId !== req.userId) {
+      return res.status(403).send({ message: 'Not Authorized' });
+    }
+    await Task.destroy({
       where: {
-        id: req.params.list_id,
+        id: req.params.task_id,
       },
     });
-    res.status(200);
+    board = await getBoardWithEverything(req.userId);
+    res.status(200).send({ board });
   } catch (error) {
     res.status(500).send({ message: error });
   }
 };
 
-exports.renameTask = async (req, res) => {
-  let task = await Task.update(
-    { name: req.body.name },
-    {
-      where: {
-        id: req.params.task_id,
-      },
+exports.updateTask = async (req, res) => {
+  try {
+    const tasks = await Task.findAll({
+      where: { id: req.params.task_id },
+      include: { model: List, include: Board },
+    });
+    if (tasks[0].List.Board.UserId !== req.userId) {
+      return res.status(403).send({ message: 'Not Authorized' });
     }
-  );
-  if (task) {
-    res.status(200).send({ task });
+    await Task.update(
+      { name: req.body.name, description: req.body.description },
+      {
+        where: {
+          id: req.params.task_id,
+        },
+      }
+    );
+    board = await getBoardWithEverything(req.userId);
+    res.status(200).send({ board });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
   }
 };
 
@@ -58,6 +86,9 @@ exports.reorderTask = async (req, res) => {
     let board = await getBoardWithList(req.params.id);
     if (!board) {
       res.status(404).send({ message: 'Board not found.' });
+    }
+    if (board.UserId !== req.userId) {
+      return res.status(403).send({ message: 'Not Authorized' });
     }
     let fromList = await getListWithTasks(fromListId);
     if (!fromList) {
